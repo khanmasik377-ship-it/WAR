@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">HTML Live Wallpaper</string>
+    <string name="wallpaper_description">A live wallpaper powered by HTML, CSS and JS</string>
+</resources>

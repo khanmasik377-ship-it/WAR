@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>WAR — English Sikho</title>
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQm9sIFdhbGxwYXBlciIsInNob3J0X25hbWUiOiJCb2wiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzBCMTEyMCIsInRoZW1lX2NvbG9yIjoiIzBCMTEyMCJ9">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap');
+
+  :root{
+    --bg-0:#1E1140;
+    --bg-1:#3B2470;
+    --gold:#E8B75B;
+    --teal:#4FD1C5;
+    --ink:#F5F3EE;
+    --muted:#C7BEE0;
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none;}
+
+  html,body{
+    margin:0; padding:0; height:100%; overflow:hidden;
+    background:
+      radial-gradient(circle at 30% 0%, #8B6BD8 0%, transparent 45%),
+      radial-gradient(circle at 90% 15%, #C77DD1 0%, transparent 40%),
+      linear-gradient(165deg, #6C4AB6 0%, #452C82 40%, #1E1140 100%);
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+  }
+
+  .stars{
+    position:fixed; inset:0; pointer-events:none; opacity:.5;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, #ffffff55, transparent),
+      radial-gradient(1px 1px at 70% 15%, #ffffff40, transparent),
+      radial-gradient(1.5px 1.5px at 85% 60%, #ffffff35, transparent),
+      radial-gradient(1px 1px at 35% 75%, #ffffff30, transparent),
+      radial-gradient(1px 1px at 55% 45%, #ffffff25, transparent);
+  }
+
+  .screen{
+    height:100dvh; width:100vw; display:flex; flex-direction:column;
+    align-items:center; justify-content:space-between;
+    padding:6vh 6vw 4vh; position:relative; z-index:1;
+  }
+
+  /* ---- Time badge (top-right corner) ---- */
+  .time-badge{
+    position:fixed; top:18px; right:18px; z-index:3;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    background:rgba(0,0,0,.28);
+    border:1px solid rgba(255,255,255,.15);
+    backdrop-filter:blur(6px);
+    padding:7px 14px;
+    border-radius:999px;
+    letter-spacing:.5px;
+  }
+  .time-badge span.ampm{ font-size:.7em; font-weight:600; color:var(--gold); margin-left:3px;}
+
+  /* ---- Hero decorative panel ---- */
+  .hero-panel{
+    width:100%; max-width:420px; height:20vh; min-height:140px;
+    border-radius:26px;
+    margin-top:4vh;
+    background:linear-gradient(150deg, #5EE8D8 0%, #4FA3D1 55%, #6C4AB6 100%);
+    box-shadow:0 12px 40px rgba(76,60,150,.4);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .hero-panel::after{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 75% 20%, rgba(255,255,255,.35), transparent 45%);
+  }
+  .hero-panel svg.clock3d{ width:120px; height:120px; position:relative; z-index:1; overflow:visible; }
+  .hero-panel svg.clock3d #hourHand,
+  .hero-panel svg.clock3d #minuteHand,
+  .hero-panel svg.clock3d #secondHand{
+    transform-origin:50px 50px;
+    transition:transform .25s cubic-bezier(.4,2,.4,1);
+  }
+
+  /* ---- Phrase Card ---- */
+  .card{
+    width:100%; max-width:420px;
+    background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(10px);
+    border-radius:22px;
+    padding:26px 22px 22px;
+    text-align:center;
+    position:relative;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+  }
+  .card.enter{ animation:cardIn .5s cubic-bezier(.2,.8,.2,1); }
+  @keyframes cardIn{
+    0%{opacity:0; transform:translateY(14px) scale(.97);}
+    100%{opacity:1; transform:translateY(0) scale(1);}
+  }
+
+  .eyebrow{
+    font-size:11px; letter-spacing:3px; text-transform:uppercase;
+    color:var(--teal); font-weight:600; margin-bottom:14px;
+  }
+
+  .english{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(24px,7vw,32px);
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.3;
+  }
+
+  .hindi{
+    font-family:'Noto Sans Devanagari',sans-serif;
+    font-size:16px;
+    color:var(--muted);
+    margin-top:8px;
+    font-weight:400;
+  }
+
+  .listen-btn{
+    margin-top:18px;
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(79,209,197,.12);
+    border:1px solid rgba(79,209,197,.35);
+    color:var(--teal);
+    padding:9px 18px;
+    border-radius:999px;
+    font-size:13px; font-weight:600; letter-spacing:.5px;
+    cursor:pointer;
+  }
+  .listen-btn:active{ transform:scale(.95); }
+  .listen-btn svg{ width:15px; height:15px; }
+  .listen-btn.speaking{ box-shadow:0 0 0 6px rgba(79,209,197,.08); }
+
+  .voice-note{
+    margin-top:8px; font-size:10.5px; color:var(--muted); opacity:.7;
+    letter-spacing:.3px; font-style:italic;
+  }
+
+  /* ---- Power button ---- */
+  .power-zone{ display:flex; flex-direction:column; align-items:center; gap:10px; }
+  .power-btn{
+    width:78px; height:78px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #4B2E86, #1E1140);
+    border:1.5px solid rgba(232,183,91,.4);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; cursor:pointer;
+    box-shadow:0 0 0 0 rgba(232,183,91,.4);
+    transition:box-shadow .25s ease, transform .15s ease, border-color .4s ease;
+  }
+  .power-btn svg{ width:30px; height:30px; transition:opacity .3s ease; }
+  .power-btn:active{ transform:scale(.92); }
+  .power-btn.pulse{ animation:powerPulse .6s ease-out; }
+  @keyframes powerPulse{
+    0%{ box-shadow:0 0 0 0 rgba(232,183,91,.45);}
+    100%{ box-shadow:0 0 0 22px rgba(232,183,91,0);}
+  }
+
+  /* Day = sun */
+  .power-btn.day{ border-color:rgba(232,183,91,.5); }
+  .power-btn.day .sun-icon{ display:block; }
+  .power-btn.day .moon-icon{ display:none; }
+  .sun-icon circle{ fill:var(--gold); }
+  .sun-icon line{ stroke:var(--gold); }
+
+  /* Night = moon */
+  .power-btn.night{ border-color:rgba(160,180,255,.45); }
+  .power-btn.night .sun-icon{ display:none; }
+  .power-btn.night .moon-icon{ display:block; }
+  .moon-icon path{ fill:#C9D4FF; }
+  .power-btn.night.pulse{ animation:powerPulseNight .6s ease-out; }
+  @keyframes powerPulseNight{
+    0%{ box-shadow:0 0 0 0 rgba(160,180,255,.45);}
+    100%{ box-shadow:0 0 0 22px rgba(160,180,255,0);}
+  }
+  .power-label{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+
+  .flash{
+    position:fixed; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:5;
+  }
+  .flash.on{ animation:flashOn .28s ease-out; }
+  @keyframes flashOn{
+    0%{opacity:0;} 15%{opacity:.55;} 100%{opacity:0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+<div class="flash" id="flash"></div>
+<div class="time-badge" id="timeBadge">--:--<span class="ampm" id="ampm"></span></div>
+
+<div class="screen">
+
+  <div class="hero-panel">
+    <svg class="clock3d" viewBox="0 0 100 100">
+      <defs>
+        <radialGradient id="faceGrad" cx="35%" cy="28%" r="75%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="55%" stop-color="#e9ecf2"/>
+          <stop offset="100%" stop-color="#b6bdca"/>
+        </radialGradient>
+        <filter id="clockShadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.35"/>
+        </filter>
+      </defs>
+
+      <circle cx="50" cy="50" r="46" fill="url(#faceGrad)" filter="url(#clockShadow)" stroke="#ffffff" stroke-width="1.5"/>
+
+      <g stroke="#6b7280" stroke-width="2" stroke-linecap="round">
+        <line x1="50" y1="8" x2="50" y2="14"/>
+        <line x1="50" y1="86" x2="50" y2="92"/>
+        <line x1="8" y1="50" x2="14" y2="50"/>
+        <line x1="86" y1="50" x2="92" y2="50"/>
+      </g>
+
+      <g id="hourHand"><line x1="50" y1="50" x2="50" y2="29" stroke="#2b2f3a" stroke-width="4.5" stroke-linecap="round"/></g>
+      <g id="minuteHand"><line x1="50" y1="50" x2="50" y2="18" stroke="#3d4250" stroke-width="3.2" stroke-linecap="round"/></g>
+      <g id="secondHand"><line x1="50" y1="50" x2="50" y2="15" stroke="#E8B75B" stroke-width="1.4" stroke-linecap="round"/></g>
+
+      <circle cx="50" cy="50" r="3.2" fill="#2b2f3a"/>
+    </svg>
+  </div>
+
+  <div class="card enter" id="card">
+    <div class="eyebrow" id="tag">Daily Phrase</div>
+    <div class="english" id="english">Loading...</div>
+    <div class="hindi" id="hindi"></div>
+    <button class="listen-btn" id="listenBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+      Listen
+    </button>
+  </div>
+
+  <div class="power-zone">
+    <div class="power-btn day" id="powerBtn">
+      <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4.2"/>
+        <line x1="12" y1="2" x2="12" y2="4.5"/>
+        <line x1="12" y1="19.5" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="4.5" y2="12"/>
+        <line x1="19.5" y1="12" x2="22" y2="12"/>
+        <line x1="4.9" y1="4.9" x2="6.6" y2="6.6"/>
+        <line x1="17.4" y1="17.4" x2="19.1" y2="19.1"/>
+        <line x1="4.9" y1="19.1" x2="6.6" y2="17.4"/>
+        <line x1="17.4" y1="6.6" x2="19.1" y2="4.9"/>
+      </svg>
+      <svg class="moon-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/>
+      </svg>
+    </div>
+    <div class="power-label">Tap for next phrase</div>
+  </div>
+
+</div>
+
+<script>
+  // ---------- Phrase bank ----------
+  const phrases = [
+    {en:"How are you?", hi:"आप कैसे हैं?", tag:"Greeting"},
+    {en:"I am fine, thank you.", hi:"मैं ठीक हूं, धन्यवाद।", tag:"Greeting"},
+    {en:"What is your name?", hi:"आपका नाम क्या है?", tag:"Greeting"},
+    {en:"Nice to meet you.", hi:"आपसे मिलकर अच्छा लगा।", tag:"Greeting"},
+    {en:"Where are you from?", hi:"आप कहाँ से हैं?", tag:"Greeting"},
+    {en:"Can you help me, please?", hi:"क्या आप मेरी मदद कर सकते हैं?", tag:"Request"},
+    {en:"I don't understand.", hi:"मुझे समझ नहीं आया।", tag:"Everyday"},
+    {en:"Please speak slowly.", hi:"कृपया धीरे बोलिए।", tag:"Everyday"},
+    {en:"How much does this cost?", hi:"इसकी कीमत कितनी है?", tag:"Shopping"},
+    {en:"I would like some water.", hi:"मुझे थोड़ा पानी चाहिए।", tag:"Everyday"},
+    {en:"What time is it?", hi:"अभी क्या समय हुआ है?", tag:"Everyday"},
+    {en:"I am learning English.", hi:"मैं अंग्रेज़ी सीख रहा हूं।", tag:"Motivation"},
+    {en:"Practice makes a person perfect.", hi:"अभ्यास से इंसान परिपूर्ण बनता है।", tag:"Motivation"},
+    {en:"Never give up on your dreams.", hi:"अपने सपनों को कभी मत छोड़ो।", tag:"Motivation"},
+    {en:"I am proud of my work.", hi:"मुझे अपने काम पर गर्व है।", tag:"Motivation"},
+    {en:"Let's start working.", hi:"चलो काम शुरू करते हैं।", tag:"Work"},
+    {en:"I will finish this today.", hi:"मैं आज यह पूरा कर लूंगा।", tag:"Work"},
+    {en:"Can we meet tomorrow?", hi:"क्या हम कल मिल सकते हैं?", tag:"Work"},
+    {en:"Thank you so much.", hi:"आपका बहुत बहुत धन्यवाद।", tag:"Everyday"},
+    {en:"You are welcome.", hi:"आपका स्वागत है।", tag:"Everyday"},
+    {en:"I am sorry for the delay.", hi:"देरी के लिए मुझे खेद है।", tag:"Everyday"},
+    {en:"Have a great day.", hi:"आपका दिन शुभ हो।", tag:"Greeting"},
+    {en:"See you later.", hi:"फिर मिलेंगे।", tag:"Greeting"},
+    {en:"This is a good idea.", hi:"यह एक अच्छा विचार है।", tag:"Everyday"},
+    {en:"I need more time.", hi:"मुझे और समय चाहिए।", tag:"Work"}
+  ];
+
+  let idx = Math.floor(Math.random()*phrases.length);
+
+  const englishEl = document.getElementById('english');
+  const hindiEl = document.getElementById('hindi');
+  const tagEl = document.getElementById('tag');
+  const cardEl = document.getElementById('card');
+  const powerBtn = document.getElementById('powerBtn');
+  const flashEl = document.getElementById('flash');
+  const listenBtn = document.getElementById('listenBtn');
+
+  function renderPhrase(){
+    const p = phrases[idx];
+    englishEl.textContent = p.en;
+    hindiEl.textContent = p.hi;
+    tagEl.textContent = p.tag;
+
+    cardEl.classList.remove('enter');
+    void cardEl.offsetWidth; // reflow to restart animation
+    cardEl.classList.add('enter');
+  }
+
+  function nextPhrase(){
+    idx = (idx + 1) % phrases.length;
+
+    // power button feedback
+    powerBtn.classList.remove('pulse');
+    void powerBtn.offsetWidth;
+    powerBtn.classList.add('pulse');
+
+    flashEl.classList.remove('on');
+    void flashEl.offsetWidth;
+    flashEl.classList.add('on');
+
+    if (navigator.vibrate) navigator.vibrate(12);
+
+    renderPhrase();
+  }
+
+  powerBtn.addEventListener('click', nextPhrase);
+
+  // ---------- Speech ----------
+  let voicesReady = false;
+  let englishVoice = null;
+  let currentUtter = null; // keep global ref, mobile browsers can drop it otherwise
+
+  function loadVoices(){
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length){
+      englishVoice = voices.find(v => v.lang === 'en-US') ||
+                      voices.find(v => v.lang && v.lang.startsWith('en')) ||
+                      voices[0];
+      voicesReady = true;
+    }
+  }
+
+  if ('speechSynthesis' in window){
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  function speakPhrase(){
+    const text = phrases[idx].en;
+    if (!('speechSynthesis' in window)) {
+      alert('Is browser mein awaaz support nahi hai.');
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    // Android Chrome sometimes needs a tiny delay right after cancel()
+    setTimeout(() => {
+      if (!voicesReady) loadVoices();
+
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = englishVoice ? englishVoice.lang : 'en-US';
+      if (englishVoice) utter.voice = englishVoice;
+      utter.rate = 0.85;
+      utter.pitch = 1;
+      utter.volume = 1;
+
+      utter.onstart = () => listenBtn.classList.add('speaking');
+      utter.onend = () => listenBtn.classList.remove('speaking');
+      utter.onerror = () => {
+        listenBtn.classList.remove('speaking');
+      };
+
+      currentUtter = utter;
+      window.speechSynthesis.speak(utter);
+
+      // Chrome/Android bug: speech can auto-pause after ~15s of silence in the queue.
+      // This keeps it alive for longer phrases.
+      const resumeGuard = setInterval(() => {
+        if (!window.speechSynthesis.speaking){
+          clearInterval(resumeGuard);
+          return;
+        }
+        window.speechSynthesis.resume();
+      }, 5000);
+    }, 60);
+  }
+
+  listenBtn.addEventListener('click', speakPhrase);
+
+  // ---------- Clock ----------
+  const hourHand = document.getElementById('hourHand');
+  const minuteHand = document.getElementById('minuteHand');
+  const secondHand = document.getElementById('secondHand');
+
+  function updateClock(){
+    const now = new Date();
+    let h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = now.getSeconds();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12; if (h === 0) h = 12;
+    document.getElementById('timeBadge').innerHTML = `${h}:${m}<span class="ampm">${ampm}</span>`;
+
+    // rotate 3D analog clock hands to real time
+    const hourDeg = ((h % 12) + now.getMinutes()/60) * 30;
+    const minuteDeg = (now.getMinutes() + s/60) * 6;
+    const secondDeg = s * 6;
+    hourHand.style.transform = `rotate(${hourDeg}deg)`;
+    minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+    secondHand.style.transform = `rotate(${secondDeg}deg)`;
+
+    // day = 6 AM to 6 PM -> sun, else -> moon
+    const rawHour = now.getHours();
+    const isDay = rawHour >= 6 && rawHour < 18;
+    powerBtn.classList.toggle('day', isDay);
+    powerBtn.classList.toggle('night', !isDay);
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+  renderPhrase();
+</script>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 
-
 publipackage com.example.htmlwallpaper;
+
 
 import android.graphics.Canvas;
 import android.os.Handler;

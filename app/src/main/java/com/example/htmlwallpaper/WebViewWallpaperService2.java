@@ -7,7 +7,7 @@ import android.service.wallpaper.WallpaperService;
 import android.view.SurfaceHolder;
 import android.webkit.WebView;
 
-public class WebViewWallpaperService2 extends WallpaperService { {
+public class WebViewWallpaperService2 extends WallpaperService {
 
     @Override
     public Engine onCreateEngine() {
